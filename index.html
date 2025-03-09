@@ -4,15 +4,47 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Mode Toggle</title>
-    <link rel="stylesheet" href="styles.css">
+    
+    <!-- CSS Inside -->
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background 0.5s, color 0.5s;
+        }
+        #themeToggle {
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            outline: none;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
 
     <h1>🌍 Welcome to My Website!</h1>
     <button id="themeToggle">🌙</button>
 
-    <script src="script.js"></script>
+    <!-- JavaScript Inside -->
+    <script>
+        const toggleBtn = document.getElementById("themeToggle");
+
+        toggleBtn.addEventListener("click", () => {
+            if (document.body.style.backgroundColor === "black") {
+                document.body.style.backgroundColor = "white";
+                document.body.style.color = "black";
+                toggleBtn.textContent = "☀️";
+            } else {
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+                toggleBtn.textContent = "🌙";
+            }
+        });
+    </script>
+
 </body>
 </html>
-
-
