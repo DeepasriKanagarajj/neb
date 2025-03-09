@@ -5,8 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dark Mode Toggle</title>
     
-    <!-- CSS Inside -->
     <style>
+        /* Background Video Styling */
+        #bg-video {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+            animation: moveBackground 20s linear infinite; /* Smooth animation */
+        }
+
+        /* Background Animation */
+        @keyframes moveBackground {
+            0% {
+                transform: scale(1) translateY(0);
+            }
+            50% {
+                transform: scale(1.1) translateY(-10px); /* Slight zoom and upward shift */
+            }
+            100% {
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* General Body Styling */
         body {
             background-color: black;
             color: white;
@@ -14,6 +39,8 @@
             font-family: Arial, sans-serif;
             transition: background 0.5s, color 0.5s;
         }
+
+        /* Toggle Button Styling */
         #themeToggle {
             font-size: 30px;
             cursor: pointer;
@@ -21,15 +48,23 @@
             background: none;
             outline: none;
             margin-top: 20px;
+            position: relative;
+            z-index: 1; /* Ensures button stays above the video */
         }
     </style>
 </head>
 <body>
 
-    <h1>🌍 neb is live. You're invited </h1>
+    <!-- Background Video -->
+    <video autoplay loop muted playsinline id="bg-video">
+        <source src="your-nebula-video.mp4" type="video/mp4">
+    </video>
+
+    <!-- Content -->
+    <h1>🌍 neb is live. You're invited</h1>
     <button id="themeToggle">🌙</button>
 
-    <!-- JavaScript Inside -->
+    <!-- JavaScript -->
     <script>
         const toggleBtn = document.getElementById("themeToggle");
 
