@@ -3,14 +3,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My One-Page Website</title>
+    <title>Dark Mode Toggle</title>
     <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 50px; }
-        h1 { color: #333; }
+        /* Default Dark Mode */
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            transition: background 0.5s, color 0.5s;
+        }
+
+        /* Toggle Button */
+        #themeToggle {
+            font-size: 30px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            outline: none;
+            margin-top: 20px;
+        }
     </style>
 </head>
 <body>
-    <h1>Welcome to My One-Page Website! 🦄</h1>
-    <p>This is a simple page deployed on Vercel.</p>
+
+    <h1>🌍 Welcome to My Website!</h1>
+    <button id="themeToggle">🌙</button> <!-- Default is Moon -->
+
+    <script>
+        const toggleBtn = document.getElementById("themeToggle");
+
+        toggleBtn.addEventListener("click", () => {
+            if (document.body.style.backgroundColor === "black") {
+                document.body.style.backgroundColor = "white";
+                document.body.style.color = "black";
+                toggleBtn.textContent = "☀️"; // Sun icon
+            } else {
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+                toggleBtn.textContent = "🌙"; // Moon icon
+            }
+        });
+    </script>
+
 </body>
 </html>
+
