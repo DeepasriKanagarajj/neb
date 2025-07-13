@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>neb | Mental Wellness Platform</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --black: #000;
+            --white: #fff;
+            --light-gray: #f5f5f5;
+            --medium-gray: #e0e0e0;
+            --dark-gray: #333;
+            --spacing-sm: 0.5rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 2rem;
+            --spacing-xl: 4rem;
+            --purple: #9d4edd;
+            --blue: #4361ee;
+            --pink: #f72585;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--black);
+            color: var(--white);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-md);
+            position: relative;
+            z-index: 2;
+        }
+        
+        /* Nebula Background */
+        #nebula-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        /* Header */
+        header {
+            padding: var(--spacing-lg) 0;
+            position: sticky;
+            top: 0;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 100;
+            backdrop-filter: blur(10px);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 2rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            text-transform: lowercase;
+        }
+        
+        .logo-icon {
+            font-size: 1.8rem;
+            color: var(--purple);
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: var(--spacing-lg);
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--white);
+            font-weight: 300;
+            position: relative;
+            padding-bottom: 2px;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+        }
+        
+        nav a:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+            transition: width 0.3s ease;
+        }
+        
+        nav a:hover:after {
+            width: 100%;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: var(--spacing-xl) 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            min-height: 100vh;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            padding: var(--spacing-xl) var(--spacing-md);
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .hero h1 {
+            font-size: 4rem;
+            font-weight: 300;
+            line-height: 1.1;
+            margin-bottom: var(--spacing-md);
+            letter-spacing: 2px;
+            background: linear-gradient(90deg, var(--white), #aaa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-transform: lowercase;
+        }
+        
+        .hero h1 span {
+            color: var(--purple);
+            -webkit-text-fill-color: var(--purple);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 600px;
+            margin: 0 auto var(--spacing-lg);
+            opacity: 0.9;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            line-height: 1.8;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-lg);
+        }
+        
+        /* Features */
+        .features {
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-xl);
+            font-weight: 300;
+            position: relative;
+            display: inline-block;
+            left: 50%;
+            transform: translateX(-50%);
+            letter-spacing: 1px;
+            text-transform: lowercase;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--purple), var(--blue));
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-lg);
+        }
+        
+        .feature-card {
+            padding: var(--spacing-lg);
+            border-radius: 15px;
+            text-align: center;
+            transition: all 0.4s ease;
+            background: rgba(30, 30, 46, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(157, 78, 221, 0.2);
+            border: 1px solid rgba(157, 78, 221, 0.3);
+        }
+        
+        .feature-icon {
+            font-size: 3.5rem;
+            margin-bottom: var(--spacing-md);
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .feature-card p {
+            opacity: 0.8;
+            margin-bottom: var(--spacing-md);
+            font-weight: 300;
+        }
+        
+        /* Why Unique */
+        .why-unique {
+            padding: var(--spacing-xl) 0;
+        }
+        
+        .benefits {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: var(--spacing-lg);
+            padding: var(--spacing-md);
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            background: rgba(30, 30, 46, 0.3);
+            backdrop-filter: blur(5px);
+        }
+        
+        .benefit-item:hover {
+            background: rgba(67, 97, 238, 0.1);
+        }
+        
+        .benefit-icon {
+            font-size: 2.5rem;
+            margin-right: var(--spacing-md);
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .benefit-content h3 {
+            font-size: 1.5rem;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        /* CTA */
+        .cta {
+            padding: var(--spacing-xl) 0;
+            text-align: center;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            margin: var(--spacing-xl) 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .cta-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: var(--spacing-md);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+        
+        .cta p {
+            margin-bottom: var(--spacing-lg);
+            font-size: 1.1rem;
+            opacity: 0.9;
+            font-weight: 300;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--purple), var(--blue));
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            font-size: 1.1rem;
+            text-decoration: none;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 400;
+            cursor: pointer;
+            border: none;
+            letter-spacing: 1px;
+            text-transform: lowercase;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(157, 78, 221, 0.4);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            border: 1px solid var(--white);
+        }
+        
+        .btn-outline:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Footer */
+        footer {
+            padding: var(--spacing-xl) 0 var(--spacing-lg);
+            text-align: center;
+            font-size: 0.9rem;
+            opacity: 0.7;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-lg);
+            margin-bottom: var(--spacing-md);
+            font-size: 1.5rem;
+        }
+        
+        .social-links a {
+            color: var(--white);
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-5px);
+            color: var(--purple);
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .animate {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        /* Particle */
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--purple), transparent);
+            opacity: 0.7;
+            z-index: 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+            
+            nav ul {
+                gap: var(--spacing-md);
+            }
+            
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .benefit-item {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+            }
+            
+            .benefit-icon {
+                margin-right: 0;
+                margin-bottom: var(--spacing-sm);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Nebula Canvas -->
+    <canvas id="nebula-canvas"></canvas>
+    
+    <!-- Particles -->
+    <div id="particles"></div>
+    
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <span class="logo-icon">🌌</span>
+                    <span>neb</span>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#why">Why neb</a></li>
+                        <li><a href="#waitlist">Waitlist</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>your mind's universe, <span>explored</span> 🌠</h1>
+                <p>neb combines anonymous voice venting, micro-therapy tasks, and dream analysis into one revolutionary mental wellness platform. Discover the cosmos within.</p>
+                <div class="hero-cta">
+                    <a href="#waitlist" class="btn">Join Waitlist</a>
+                    <a href="#features" class="btn btn-outline">Explore Features</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features -->
+    <section class="features" id="features">
+        <div class="container">
+            <h2 class="section-title">the neb experience ✨</h2>
+            <div class="features-grid">
+                <div class="feature-card animate">
+                    <div class="feature-icon">🗣️</div>
+                    <h3>Voice Venting</h3>
+                    <p>Express yourself anonymously through voice messages that self-destruct after 24 hours. AI analyzes your tone to provide empathetic responses.</p>
+                    <p class="highlight">"Finally, a safe space to be completely honest"</p>
+                </div>
+                
+                <div class="feature-card animate">
+                    <div class="feature-icon">🎮</div>
+                    <h3>Micro-Task Therapy</h3>
+                    <p>Gamified CBT exercises designed for quick anxiety relief. Complete bite-sized tasks, earn points, and build healthy habits.</p>
+                    <p class="highlight">"Anxiety relief in under 60 seconds"</p>
+                </div>
+                
+                <div class="feature-card animate">
+                    <div class="feature-icon">💤</div>
+                    <h3>Dream Journal</h3>
+                    <p>Record your dreams via text or voice and receive AI-powered insights into subconscious patterns and emotional themes.</p>
+                    <p class="highlight">"Discover what your dreams are telling you"</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Why Unique -->
+    <section class="why-unique" id="why">
+        <div class="container">
+            <h2 class="section-title">why neb stands out 🌟</h2>
+            <div class="benefits">
+                <div class="benefit-item animate">
+                    <div class="benefit-icon">🔒</div>
+                    <div class="benefit-content">
+                        <h3>Complete Anonymity</h3>
+                        <p>Your voice messages self-destruct after 24 hours. We don't store personal data. Genuine expression without fear of judgment.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item animate">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-content">
+                        <h3>Instant Anxiety Relief</h3>
+                        <p>Micro-tasks designed by mental health professionals provide immediate relief when you need it most. No appointments, no waiting.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item animate">
+                    <div class="benefit-icon">🧠</div>
+                    <div class="benefit-content">
+                        <h3>AI-Powered Insights</h3>
+                        <p>Our proprietary algorithms analyze your emotional patterns across voice, activities, and dreams to provide personalized insights.</p>
+                    </div>
+                </div>
+                
+                <div class="benefit-item animate">
+                    <div class="benefit-icon">✨</div>
+                    <div class="benefit-content">
+                        <h3>Holistic Approach</h3>
+                        <p>The only platform that connects conscious expression, cognitive therapy, and subconscious exploration for complete mental wellness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA -->
+    <section class="cta" id="waitlist">
+        <div class="container">
+            <div class="cta-content">
+                <h2>ready to explore your mind? 🪐</h2>
+                <p>Join our waitlist to be among the first to experience neb when we launch. Early access users get premium features for free.</p>
+                <form id="waitlist-form" style="max-width: 500px; margin: var(--spacing-lg) auto;">
+                    <div style="display: flex; gap: var(--spacing-sm); margin-bottom: var(--spacing-md);">
+                        <input type="email" placeholder="Your email address" required style="flex: 1; padding: 1rem; border: none; border-radius: 50px; font-size: 1rem; background: rgba(255,255,255,0.1); color: white;">
+                        <button type="submit" class="btn">Join</button>
+                    </div>
+                    <p style="font-size: 0.9rem; opacity: 0.8;">We respect your privacy. Unsubscribe anytime.</p>
+                </form>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="social-links">
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-tiktok"></i></a>
+            </div>
+            <p>&copy; 2025 neb. All rights reserved.</p>
+            <p>Mental wellness reimagined 🌌</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Nebula Canvas Animation
+        const canvas = document.getElementById('nebula-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        // Stars array
+        const stars = [];
+        const starCount = 300;
+        
+        // Create stars
+        for (let i =  ​0; i < starCount; i++) {
+            stars.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 3,
+                speed: Math.random() * 0.05,
+                opacity: Math.random() * 0.5 + 0.5
+            });
+        }
+        
+        // Nebula particles
+        const particles = [];
+        const particleCount = 50;
+        const colors = ['#9d4edd', '#4361ee', '#f72585', '#4cc9f0'];
+        
+        // Create particles
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                size: Math.random() * 100 + 50,
+                color: colors[Math.floor(Math.random() * colors.length)],
+                speedX: (Math.random() - 0.5) * 0.1,
+                speedY: (Math.random() - 0.5) * 0.1,
+                opacity: Math.random() * 0.2 + 0.05
+            });
+        }
+        
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw nebula background
+            const gradient = ctx.createRadialGradient(
+                canvas.width/2, canvas.height/2, 0,
+                canvas.width/2, canvas.height/2, canvas.width
+            );
+            gradient.addColorStop(0, 'rgba(15, 15, 40, 0.8)');
+            gradient.addColorStop(1, 'rgba(5, 5, 15, 1)');
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw particles
+            particles.forEach(particle => {
+                particle.x += particle.speedX;
+                particle.y += particle.speedY;
+                
+                // Boundary check
+                if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
+                if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
+                if (particle.y < -particle.size) particle.y = canvas.height + particle.size;
+                if (particle.y > canvas.height + particle.size) particle.y = -particle.size;
+                
+                // Draw particle
+                ctx.beginPath();
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(
+                    particle.x, particle.y, 0,
+                    particle.x, particle.y, particle.size
+                );
+                gradient.addColorStop(0, particle.color);
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.globalAlpha = particle.opacity;
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+            
+            // Draw stars
+            stars.forEach(star => {
+                ctx.beginPath();
+                ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity})`;
+                ctx.fill();
+                
+                // Twinkle effect
+                if (Math.random() > 0.95) {
+                    star.opacity = Math.random() * 0.5 + 0.5;
+                }
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Start animation
+        animate();
+        
+        // Resize canvas on window resize
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+        
+        // Animation on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.feature-card, .benefit-item').forEach(el => {
+                observer.observe(el);
+            });
+            
+            // Form submission
+            document.getElementById('waitlist-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                alert(`Thank you! ${email} has been added to our waitlist.`);
+                this.reset();
+            });
+            
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({
+                            top: target.offsetTop - 80,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
